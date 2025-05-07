@@ -14,6 +14,8 @@ model Product {
   price       Float
   stock       Int @default(0)
 
+  deleted     Boolean @default(false)
+
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
 
@@ -24,8 +26,9 @@ model Product {
 
 model Category {
   id        String @id @default(uuid())
-  name      String @db.VarChar(80)
+  name      String @db.VarChar(80) @unique
   slug      String?
+  deleted   Boolean @default(false)
   products  Product[]
 
   createdAt DateTime @default(now())
