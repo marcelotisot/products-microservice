@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesController } from './categories.controller';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { PaginationDto } from '../../common';
 
 describe('CategoriesController', () => {
   let controller: CategoriesController;
@@ -42,10 +43,13 @@ describe('CategoriesController', () => {
     expect(service.create).toHaveBeenCalledWith(dto);
   });
 
-  it('should call service findAll method', async () => {
-    await controller.findAll();
+  it('should call service findAll method with pagination dto', async () => {
+    const dto: PaginationDto = { page: 1, limit: 10 };
+
+    await controller.findAll(dto);
 
     expect(service.findAll).toHaveBeenCalledTimes(1);
+    expect(service.findAll).toHaveBeenCalledWith(dto);
   });
 
   it('should call service findOne method', async () => {
