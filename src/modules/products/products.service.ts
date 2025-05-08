@@ -26,14 +26,14 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   }
 
   async create(createProductDto: CreateProductDto) {
-    const { name, description, price, stock, categoryId } = createProductDto;
+    const { name, description, price, stock, sizes, categoryId } = createProductDto;
 
     const category = await this.categoriesService.findOne(categoryId);
 
 
     const product = await this.product.create({
       data: {
-        name, description, price, stock,
+        name, description, price, stock, sizes,
         slug: slugify(name).toLowerCase().trim(),
         category: {
           connect: {
@@ -67,7 +67,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
-    const { name, description, price, stock, categoryId } = updateProductDto;
+    const { name, description, price, stock, sizes, categoryId } = updateProductDto;
 
     if (categoryId) {
       const category = await this.categoriesService.findOne(categoryId);
@@ -75,7 +75,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
       return this.product.update({
         where: { id },
         data: {
-          name, description, price, stock,
+          name, description, price, stock, sizes,
           slug: name ? slugify(name).toLowerCase().trim() : undefined,
           category: {
             connect: {
@@ -89,7 +89,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     return this.product.update({
       where: { id },
       data: {
-        name, description, price, stock,
+        name, description, price, stock, sizes,
         slug: name ? slugify(name).toLowerCase().trim() : undefined
       }
     });

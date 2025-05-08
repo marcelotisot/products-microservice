@@ -1,4 +1,5 @@
 import { 
+  IsArray,
   IsNotEmpty, 
   IsNumber, 
   IsOptional, 
@@ -17,7 +18,7 @@ export class CreateProductDto {
 
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @IsNumber({
     maxDecimalPlaces: 4
@@ -29,6 +30,10 @@ export class CreateProductDto {
   @IsNumber()
   @IsPositive()
   stock: number;
+
+  @IsString({ each: true })
+  @IsArray()
+  sizes: string[];
 
   @IsUUID()
   @IsNotEmpty()
