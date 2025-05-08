@@ -64,9 +64,12 @@ describe('CategoriesController', () => {
   it('should call service update method', async () => {
     const id = '202630dc-e808-4702-b4af-31d1c1cfbb41';
 
-    const dto: UpdateCategoryDto = { name: 'Updated category' };
+    const dto: UpdateCategoryDto = { 
+      id,
+      name: 'Updated category' 
+    };
 
-    await controller.update(id, dto);
+    await controller.update(dto);
 
     expect(service.update).toHaveBeenCalledWith(id, dto);
     expect(service.update).toHaveBeenCalledTimes(1);
