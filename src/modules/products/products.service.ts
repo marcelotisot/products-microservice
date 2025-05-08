@@ -103,4 +103,11 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
     return product;
   }
+
+  async findBySlug(slug: string) {
+    return this.product.findUnique({
+      where: { slug },
+      include: { category: true }
+    });
+  }
 }
