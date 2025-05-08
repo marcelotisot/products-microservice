@@ -1,48 +1,42 @@
 import { 
   Controller, 
-  Get, 
-  Post, 
-  Body, 
-  Patch, 
-  Param, 
-  Delete, 
-  ParseUUIDPipe, 
-  Query
+  ParseUUIDPipe
 } from '@nestjs/common';
 
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { PaginationDto } from '../../common';
 
-@Controller('categories')
+@Controller()
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
+  @MessagePattern('create-category')
+  create(@Payload() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
 
-  @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
+  @MessagePattern('find-all-categories')
+  findAll(@Payload() paginationDto: PaginationDto) {
     return this.categoriesService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
+  @MessagePattern('find-one-category')
+  findOne(@Payload('id', ParseUUIDPipe) id: string) {
     return this.categoriesService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string, 
-    @Body() updateCategoryDto: UpdateCategoryDto
-  ) {
-    return this.categoriesService.update(id, updateCategoryDto);
+  @MessagePattern('update-category')
+  update(@Payload() updateCategoryDto: UpdateCategoryDto) {
+    return this.categoriesService.update(
+      updateCategoryDto.id, 
+      updateCategoryDto
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
+  @MessagePattern('delete-category')
+  remove(@Payload('id', ParseUUIDPipe) id: string) {
     return this.categoriesService.remove(id);
   }
 }
