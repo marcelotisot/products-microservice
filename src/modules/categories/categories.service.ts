@@ -4,9 +4,10 @@ import {
   NotFoundException, 
   OnModuleInit } from '@nestjs/common';
 
-import { Category, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import slugify from 'slugify';
+import { PaginationDto } from '../../common';
 
 @Injectable()
 export class CategoriesService extends PrismaClient implements OnModuleInit {
@@ -31,11 +32,27 @@ export class CategoriesService extends PrismaClient implements OnModuleInit {
     return category;
   }
 
-  findAll() {
-    return this.category.findMany({
-      where: { deleted: false },
-      orderBy: { createdAt: 'desc' }
-    });
+  async findAll(paginationDto: PaginationDto) {
+    const { page = 1, limit = 10 } = paginationDto;
+
+    const totalPages = await this.category.count();
+    const lastPage = Math.ceil(totalPages / limit);
+
+    return {
+      data: await this.category.findMany({
+        where: { deleted: false },
+        orderBy: { createdAt: 'desc' },
+        
+        // Paginacion
+        skip: (page - 1) * limit,
+        take: limit
+      }),
+      meta: {
+        total: totalPages,
+        page: page,
+        lastPage: lastPage
+      }
+    }
   }
 
   async findOne(id: string) {

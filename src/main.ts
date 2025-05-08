@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { envs } from './config';
-import { PrismaExceptionFilter } from './common/prisma-exception.filter';
+import { PrismaExceptionFilter } from './common';
 
 async function bootstrap() {
   const logger = new Logger('Main-ProductsMicroservice');
