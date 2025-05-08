@@ -16,12 +16,12 @@ import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post('create')
+  @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
 
-  @Get('all')
+  @Get()
   findAll() {
     return this.categoriesService.findAll();
   }
@@ -31,7 +31,7 @@ export class CategoriesController {
     return this.categoriesService.findOne(id);
   }
 
-  @Patch('update/:id')
+  @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string, 
     @Body() updateCategoryDto: UpdateCategoryDto
@@ -39,7 +39,7 @@ export class CategoriesController {
     return this.categoriesService.update(id, updateCategoryDto);
   }
 
-  @Delete('delete/:id')
+  @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.categoriesService.remove(id);
   }

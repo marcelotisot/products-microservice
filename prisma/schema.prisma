@@ -11,6 +11,7 @@ model Product {
   id          String @id @default(uuid())
   name        String
   description String? @db.Text
+  slug        String? @unique
   price       Float
   stock       Int @default(0)
 
@@ -27,7 +28,7 @@ model Product {
 model Category {
   id        String @id @default(uuid())
   name      String @db.VarChar(80) @unique
-  slug      String?
+  slug      String? @unique
   deleted   Boolean @default(false)
   products  Product[]
 

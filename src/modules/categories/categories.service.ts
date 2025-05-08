@@ -4,7 +4,7 @@ import {
   NotFoundException, 
   OnModuleInit } from '@nestjs/common';
 
-import { PrismaClient } from '@prisma/client';
+import { Category, PrismaClient } from '@prisma/client';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import slugify from 'slugify';
 
