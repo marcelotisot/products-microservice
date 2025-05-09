@@ -1,9 +1,10 @@
 import { 
+  HttpStatus,
   Injectable, 
   Logger, 
-  NotFoundException, 
   OnModuleInit } from '@nestjs/common';
 
+  import { RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import slugify from 'slugify';
@@ -60,8 +61,12 @@ export class CategoriesService extends PrismaClient implements OnModuleInit {
       where: { id, deleted: false }
     });
 
-    if(!category) 
-      throw new NotFoundException(`Category with id ${id} not found`);
+    if(!category) {
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        message: `Category with id ${id} not found`
+      });
+    }
 
     return category;
   }
